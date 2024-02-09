@@ -20,7 +20,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0XFF005f73),
           centerTitle: true,
-          title: const SansText('Tip Calculator', 25.0),
+          title: const SansText('Tip Calculator', 30.0),
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -50,18 +50,18 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                         });
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Enter bill amount here',
+                        labelText: 'Enter bill amount here:',
                         labelStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors
-                                  .white), // Set the color of the underline
+                                  .white),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white, fontSize: 25.0),
                     ),
                     const SizedBox(height: 20.0),
-                    const SansText('Select Tip Percentage', 20.0),
+                    const SansText('Select Tip Percentage', 25.0),
                     Slider(
                       value: tipPercentage,
                       onChanged: (value) {
@@ -72,16 +72,22 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                       min: 0.1,
                       max: 0.3,
                       divisions: 4,
-                      label: '${(tipPercentage * 100).round()}%',
+                      // label: '${(tipPercentage * 100).round()}%',
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SansText('${(tipPercentage * 100).round()}%', 20.0)
+                      ],
                     ),
                     const SizedBox(height: 20.0),
                     SansText(
                         'Tip Amount: \$${(billAmount * tipPercentage).toStringAsFixed(2)}',
-                        20.0),
+                        23.0),
                     const SizedBox(height: 10),
                     SansText(
                         'Total Amount: \$${(billAmount + (billAmount * tipPercentage)).toStringAsFixed(2)}',
-                        20.0),
+                        23.0),
                   ],
                 ),
               ),
