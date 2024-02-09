@@ -18,7 +18,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: const Color(0XFF005f73),
           centerTitle: true,
           title: const SansText('Tip Calculator', 25.0),
         ),
@@ -28,6 +28,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                   image: AssetImage('assets/bg.jpg'), fit: BoxFit.cover)),
           child: ListView(
             children: [
+              const SizedBox(height: 40.0),
               Container(
                 decoration: BoxDecoration(
                     color: const Color.fromRGBO(0, 0, 0, 0.5),
@@ -49,7 +50,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                         });
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Enter bill amount',
+                        labelText: 'Enter bill amount here',
                         labelStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
