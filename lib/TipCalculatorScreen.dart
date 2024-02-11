@@ -12,6 +12,10 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
   double billAmount = 0.0;
   double tipPercentage = 0.1;
   int numberOfPeople = 1;
+  bool roundUp = false;
+
+  String amountPerPersonText = '';
+  String roundedAmountText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -89,51 +93,126 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                     SansText(
                         'Total Amount: \$${(billAmount + (billAmount * tipPercentage)).toStringAsFixed(2)}',
                         23.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.remove),
-                                    onPressed: () {
-                                      setState(() {
-                                        if (numberOfPeople > 1) {
-                                          numberOfPeople--;
-                                        }
-                                      });
-                                    },
-                                  ),
-                                 SansText('$numberOfPeople', 20.0),
-                                 IconButton(
-                                   icon: Icon(Icons.add),
-                                   onPressed: () {
-                                     setState(() {
-                                       numberOfPeople++;
-                                     });
-                                   },
-                                 ) 
-                                ],
-                              ),
-                              const SizedBox(height: 10.0),
-                              SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople )}',  20.0),
-                            ],
-                          ),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),
+              const SizedBox(height: 10.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(0, 0, 0, 0.5),
+                        borderRadius: BorderRadius.circular(20.0)),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 8.0, bottom: 8.0),
+                    margin:
+                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  if (numberOfPeople > 1) {
+                                    numberOfPeople--;
+                                  }
+                                });
+                              },
+                            ),
+                            SansText('$numberOfPeople', 20.0),
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  numberOfPeople++;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                        SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople )}',  23.0),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(0, 0, 0, 0.5),
+                        borderRadius: BorderRadius.circular(20.0)),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 8.0, bottom: 8.0),
+                    margin:
+                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SansText('Round Up', 20.0),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_downward),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  roundUp = false;
+                                  updateAmounts();
+                                });
+                              },
+                            ),
+
+                            const SansText('Round Down', 20.0),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_upward),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  roundUp = true;
+                                  updateAmounts();
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10.0),
+                        SansText('Rounded Amount: \$${roundTotalAmount().toStringAsFixed(0)}', 23.0),
+                      ],
+                    ),
+                  )
+                ],
+              )// opacity container
             ],
           ),
         ),
       ),
     );
+  }
+
+  double roundTotalAmount() {
+    double totalAmount = billAmount + (billAmount * tipPercentage);
+    return roundUp ? totalAmount.ceilToDouble() : totalAmount.floorToDouble();
+  }
+
+  double calculateAmountPerPerson() {
+    return roundTotalAmount() / numberOfPeople;
+  }
+
+  void updateAmounts() {
+    setState(() {
+      amountPerPersonText =
+      'Amount per Person: \$${calculateAmountPerPerson().toStringAsFixed(2)}';
+
+      roundedAmountText =
+      'Rounded Amount: \$${roundTotalAmount().toStringAsFixed(0)}';
+    });
   }
 }
