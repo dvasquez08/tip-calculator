@@ -146,6 +146,10 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            const SansText('Split the bill:', 20.0),
+
+                            // ===== Removing amount of people =====
+
                             IconButton(
                               icon: const Icon(Icons.remove),
                               color: Colors.white,
@@ -157,6 +161,9 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                                 });
                               },
                             ),
+
+                            // ===== Adding the amount of people =====
+
                             SansText('$numberOfPeople', 20.0),
                             IconButton(
                               icon: const Icon(Icons.add),
@@ -170,7 +177,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                           ],
                         ),
                         const SizedBox(height: 10.0),
-                        SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople).toStringAsFixed(2)}',  23.0),
+                        SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople).toStringAsFixed(2)}',  20.0),
                       ],
                     ),
                   ),
@@ -201,20 +208,6 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
 
                             const SansText('Round Up', 20.0),
                             IconButton(
-                              icon: const Icon(Icons.arrow_downward),
-                              color: Colors.white,
-                              onPressed: () {
-                                setState(() {
-                                  roundUp = false;
-                                  updateAmounts();
-                                });
-                              },
-                            ),
-
-                            // ===== Rounding the bill down =====
-
-                            const SansText('Round Down', 20.0),
-                            IconButton(
                               icon: const Icon(Icons.arrow_upward),
                               color: Colors.white,
                               onPressed: () {
@@ -224,12 +217,29 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                                 });
                               },
                             ),
+
+                            // ===== Rounding the bill down =====
+
+
+
+                            const SansText('Round Down', 20.0),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_downward),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  roundUp = false;
+                                  updateAmounts();
+                                });
+                              },
+                            ),
                           ],
                         ),
 
                         // ===== Showing the rounded amount =====
                         const SizedBox(height: 10.0),
-                        SansText('Rounded Amount: \$${roundTotalAmount().toStringAsFixed(0)}', 23.0),
+                        SansText('Rounded Total: \$${roundTotalAmount().toStringAsFixed(0)}', 20.0),
+                        SansText('Rounded Per Person: \$${calculateAmountPerPerson().toStringAsFixed(0)}', 20.0)
                       ],
                     ),
                   )
