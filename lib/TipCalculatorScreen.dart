@@ -11,6 +11,7 @@ class TipCalculatorScreen extends StatefulWidget {
 class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
   double billAmount = 0.0;
   double tipPercentage = 0.1;
+  int numberOfPeople = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +89,44 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                     SansText(
                         'Total Amount: \$${(billAmount + (billAmount * tipPercentage)).toStringAsFixed(2)}',
                         23.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.remove),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (numberOfPeople > 1) {
+                                          numberOfPeople--;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                 SansText('$numberOfPeople', 20.0),
+                                 IconButton(
+                                   icon: Icon(Icons.add),
+                                   onPressed: () {
+                                     setState(() {
+                                       numberOfPeople++;
+                                     });
+                                   },
+                                 ) 
+                                ],
+                              ),
+                              const SizedBox(height: 10.0),
+                              SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople )}',  20.0),
+                            ],
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
