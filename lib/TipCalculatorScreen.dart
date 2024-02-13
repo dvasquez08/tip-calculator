@@ -65,7 +65,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                       },
                       decoration: const InputDecoration(
                         labelText: 'Enter bill amount here:',
-                        labelStyle: TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white, fontSize: 20.0),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors
@@ -260,14 +260,20 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
 
   // ===== Functions being called for rounding the bill =====
 
+  // ===== Rounds the amount of the total bill
+
   double roundTotalAmount() {
     double totalAmount = billAmount + (billAmount * tipPercentage);
     return roundUp ? totalAmount.ceilToDouble() : totalAmount.floorToDouble();
   }
 
+  // ===== Rounds the amount of the bill per person =====
+
   double calculateAmountPerPerson() {
     return roundTotalAmount() / numberOfPeople;
   }
+
+  // ===== This updates the rounded totals in the rounding container =====
 
   void updateAmounts() {
     setState(() {
