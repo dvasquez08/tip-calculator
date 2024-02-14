@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'components.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class TipCalculatorScreen extends StatefulWidget {
   const TipCalculatorScreen({Key? key}) : super(key: key);
@@ -16,6 +17,38 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
 
   String amountPerPersonText = '';
   String roundedAmountText = '';
+
+  @override
+  void initState() {
+    super.initState();
+    initBannerAd();
+  }
+
+  late BannerAd bannerAd;
+  bool isAdloaded = false;
+  var adUnit = 'ca-app-pub-3940256099942544/6300978111'; // Testing Ad ID
+
+  // ===== Initializing Google Ads =====
+
+  initBannerAd() {
+    bannerAd = BannerAd(size: AdSize.banner,
+      adUnitId: adUnit,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            isAdloaded = true;
+          });
+        },
+
+       onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+      request: const AdRequest(),
+    );
+
+    bannerAd.load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +81,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                 padding: const EdgeInsets.only(
                     left: 10.0, right: 10.0, top: 8.0, bottom: 8.0),
                 margin:
-                    const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
+                const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,14 +98,16 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                       },
                       decoration: const InputDecoration(
                         labelText: 'Enter bill amount here:',
-                        labelStyle: TextStyle(color: Colors.white, fontSize: 20.0),
+                        labelStyle: TextStyle(
+                            color: Colors.white, fontSize: 20.0),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors
                                   .white),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.white, fontSize: 25.0),
+                      style: const TextStyle(
+                          color: Colors.white, fontSize: 25.0),
                     ),
 
                     // ===== End of user bill amount section =====
@@ -108,11 +143,13 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
 
                     const SizedBox(height: 20.0),
                     SansText(
-                        'Tip Amount: \$${(billAmount * tipPercentage).toStringAsFixed(2)}',
+                        'Tip Amount: \$${(billAmount * tipPercentage)
+                            .toStringAsFixed(2)}',
                         23.0),
                     const SizedBox(height: 10),
                     SansText(
-                        'Total Amount: \$${(billAmount + (billAmount * tipPercentage)).toStringAsFixed(2)}',
+                        'Total Amount: \$${(billAmount +
+                            (billAmount * tipPercentage)).toStringAsFixed(2)}',
                         23.0),
                   ],
                 ),
@@ -177,7 +214,9 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                           ],
                         ),
                         const SizedBox(height: 10.0),
-                        SansText('Amount per person: \$${((billAmount + (billAmount * tipPercentage)) / numberOfPeople).toStringAsFixed(2)}',  20.0),
+                        SansText('Amount per person: \$${((billAmount +
+                            (billAmount * tipPercentage)) / numberOfPeople)
+                            .toStringAsFixed(2)}', 20.0),
                       ],
                     ),
                   ),
@@ -221,7 +260,6 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                             // ===== Rounding the bill down =====
 
 
-
                             const SansText('Round Down', 20.0),
                             IconButton(
                               icon: const Icon(Icons.arrow_downward),
@@ -238,8 +276,11 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
 
                         // ===== Showing the rounded amount =====
                         const SizedBox(height: 10.0),
-                        SansText('Rounded Total: \$${roundTotalAmount().toStringAsFixed(0)}', 20.0),
-                        SansText('Rounded Per Person: \$${calculateAmountPerPerson().toStringAsFixed(0)}', 20.0)
+                        SansText('Rounded Total: \$${roundTotalAmount()
+                            .toStringAsFixed(0)}', 20.0),
+                        SansText(
+                            'Rounded Per Person: \$${calculateAmountPerPerson()
+                                .toStringAsFixed(0)}', 20.0)
                       ],
                     ),
                   )
@@ -250,10 +291,14 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
               )
 
               // ===== End of additional calculations section  =====
-
             ],
           ),
         ),
+        bottomNavigationBar: isAdloaded ? SizedBox(
+          height: bannerAd.size.height.toDouble(),
+          width: bannerAd.size.height.toDouble(),
+          child: AdWidget(ad: bannerAd),
+        ) : const SizedBox(),
       ),
     );
   }
