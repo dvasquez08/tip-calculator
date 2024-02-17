@@ -27,7 +27,7 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
   late BannerAd topBannerAd;
   late BannerAd bottomBannerAd;
   bool isAdloaded = false;
-  var adUnit = 'ca-app-pub-3940256099942544/6300978111'; // Testing Ad ID
+  var adUnit = 'ca-app-pub-3940256099942544~3347511713'; // Testing Ad ID
 
   // ===== Initializing Google Ads =====
 
@@ -189,37 +189,52 @@ class _TipCalculatorScreenState extends State<TipCalculatorScreen> {
                         left: 10.0, right: 10.0, top: 10.0),
                     child: Column(
                       children: [
+                        const SansText('Split the bill', 20.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SansText('Split the bill:', 20.0),
+                            const SansText('Number of people', 20.0),
 
                             // ===== Removing amount of people =====
 
-                            IconButton(
-                              icon: const Icon(Icons.remove),
-                              color: Colors.white,
-                              onPressed: () {
-                                setState(() {
-                                  if (numberOfPeople > 1) {
-                                    numberOfPeople--;
-                                  }
-                                });
-                              },
+                            Semantics(
+                              label: 'Decrease number of people',
+                              hint: 'Double-tap to decrease',
+                              child: IconButton(
+                                icon: const Icon(Icons.remove),
+                                color: Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    if (numberOfPeople > 1) {
+                                      numberOfPeople--;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+
+                            // ===== Number of people =====
+
+                            Semantics(
+                              label: 'Number of people: $numberOfPeople',
+                              child: SansText('$numberOfPeople', 20.0),
                             ),
 
                             // ===== Adding the amount of people =====
 
-                            SansText('$numberOfPeople', 20.0),
-                            IconButton(
-                              icon: const Icon(Icons.add),
-                              color: Colors.white,
-                              onPressed: () {
-                                setState(() {
-                                  numberOfPeople++;
-                                });
-                              },
-                            )
+                            Semantics(
+                              label: 'Increase number of people',
+                              hint: 'Double-tap to increase',
+                              child: IconButton(
+                                icon: const Icon(Icons.add),
+                                color: Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    numberOfPeople++;
+                                  });
+                                },
+                              ),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 10.0),
